@@ -462,5 +462,37 @@
         "threshold": 60,
         "description": "Swap Usage",
         "timestamp": 1744474280
+    },
+    {
+        "level": "warning",
+        "metric": "swap",
+        "value": 60.14,
+        "threshold": 60,
+        "description": "Swap Usage",
+        "timestamp": 1744474290
+    },
+    {
+        "level": "warning",
+        "metric": "swap",
+        "value": 60.37,
+        "threshold": 60,
+        "description": "Swap Usage",
+        "timestamp": 1744474354
+    },
+    {
+        "level": "warning",
+        "metric": "swap",
+        "value": 60.48,
+        "threshold": 60,
+        "description": "Swap Usage",
+        "timestamp": 1744474364
+    },
+    {
+        "level": "warning",
+        "metric": "swap",
+        "value": 60.62,
+        "threshold": 60,
+        "description": "Swap Usage",
+        "timestamp": 1744474376
     }
 ]
