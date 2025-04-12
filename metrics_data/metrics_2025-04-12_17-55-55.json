@@ -1,0 +1,245 @@
+{
+    "timestamp": "2025-04-12 17:55:44",
+    "cpu": {
+        "overall_usage": 42,
+        "cores": 2,
+        "per_core_usage": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            46.16,
+            41.55,
+            50.78,
+            56.93,
+            48.85,
+            0
+        ],
+        "load_average": {
+            "1min": 0.42,
+            "5min": 0.42,
+            "15min": 0.42
+        }
+    },
+    "memory": {
+        "total": 12454628,
+        "free": 2480504,
+        "used": 9974124,
+        "percent_used": 80.08,
+        "virtual_total": 18746084,
+        "virtual_free": 6929068,
+        "virtual_used": 11817016,
+        "virtual_percent_used": 63.04
+    },
+    "processes": [
+        {
+            "name": "chrome.exe",
+            "pid": "14112",
+            "memory_usage": "664,716 K",
+            "memory_kb": 664716,
+            "cpu_time": "0:02:32",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "Cursor.exe",
+            "pid": "2184",
+            "memory_usage": "483,888 K",
+            "memory_kb": 483888,
+            "cpu_time": "0:05:12",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "Cursor.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "10448",
+            "memory_usage": "379,236 K",
+            "memory_kb": 379236,
+            "cpu_time": "0:03:23",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "7592",
+            "memory_usage": "355,288 K",
+            "memory_kb": 355288,
+            "cpu_time": "0:02:24",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "MsMpEng.exe",
+            "pid": "3844",
+            "memory_usage": "339,368 K",
+            "memory_kb": 339368,
+            "cpu_time": "0:08:47",
+            "status": "0",
+            "user": "N\/A",
+            "command": "MsMpEng.exe"
+        },
+        {
+            "name": "Memory Compression",
+            "pid": "2176",
+            "memory_usage": "307,388 K",
+            "memory_kb": 307388,
+            "cpu_time": "0:00:11",
+            "status": "0",
+            "user": "N\/A",
+            "command": "Memory Compression"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "4584",
+            "memory_usage": "297,348 K",
+            "memory_kb": 297348,
+            "cpu_time": "0:05:04",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "Code.exe",
+            "pid": "2764",
+            "memory_usage": "290,204 K",
+            "memory_kb": 290204,
+            "cpu_time": "0:00:48",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "Code.exe"
+        },
+        {
+            "name": "Cursor.exe",
+            "pid": "2480",
+            "memory_usage": "275,968 K",
+            "memory_kb": 275968,
+            "cpu_time": "0:00:29",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "Cursor.exe"
+        },
+        {
+            "name": "Photos.exe",
+            "pid": "12688",
+            "memory_usage": "260,420 K",
+            "memory_kb": 260420,
+            "cpu_time": "0:00:10",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "Photos.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "10292",
+            "memory_usage": "248,556 K",
+            "memory_kb": 248556,
+            "cpu_time": "0:00:49",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "6972",
+            "memory_usage": "246,212 K",
+            "memory_kb": 246212,
+            "cpu_time": "0:00:32",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "4848",
+            "memory_usage": "233,228 K",
+            "memory_kb": 233228,
+            "cpu_time": "0:00:16",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "Skype.exe",
+            "pid": "11764",
+            "memory_usage": "225,344 K",
+            "memory_kb": 225344,
+            "cpu_time": "0:00:32",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "Skype.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "13876",
+            "memory_usage": "212,972 K",
+            "memory_kb": 212972,
+            "cpu_time": "0:00:17",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "5172",
+            "memory_usage": "206,156 K",
+            "memory_kb": 206156,
+            "cpu_time": "0:00:28",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "chrome.exe",
+            "pid": "13460",
+            "memory_usage": "200,668 K",
+            "memory_kb": 200668,
+            "cpu_time": "0:00:20",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "chrome.exe"
+        },
+        {
+            "name": "intelliphp.ls.exe",
+            "pid": "12812",
+            "memory_usage": "192,444 K",
+            "memory_kb": 192444,
+            "cpu_time": "0:00:03",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "intelliphp.ls.exe"
+        },
+        {
+            "name": "intelliphp.ls.exe",
+            "pid": "7036",
+            "memory_usage": "191,468 K",
+            "memory_kb": 191468,
+            "cpu_time": "0:00:03",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "intelliphp.ls.exe"
+        },
+        {
+            "name": "Code.exe",
+            "pid": "12112",
+            "memory_usage": "181,460 K",
+            "memory_kb": 181460,
+            "cpu_time": "0:00:08",
+            "status": "1",
+            "user": "DESKTOP-G44GISP\\Al-AMIN ISLAM",
+            "command": "Code.exe"
+        }
+    ],
+    "network": {
+        "bytes_received": 0,
+        "bytes_sent": 0,
+        "errors_in": 0,
+        "errors_out": 0
+    },
+    "disk_io": [],
+    "disk": []
+}

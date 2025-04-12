@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কম্পিউট মনিটরিং টুল</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title {
+            margin: 0;
+            font-size: 24px;
+        }
+        .subtitle {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #1c638e;
+        }
+        .card {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .metric-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        .metric-item h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .process-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .process-table th, .process-table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        .process-table th {
+            color: #7f8c8d;
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background-color: #3498db;
+        }
+        .progress-bar .fill.warning {
+            background-color: #f39c12;
+        }
+        .progress-bar .fill.danger {
+            background-color: #e74c3c;
+        }
+        .disk-item {
+            margin-bottom: 15px;
+        }
+        .disk-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+        .timestamp {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-align: right;
+            margin-top: 5px;
+        }
+        #autoRefreshToggle {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 class="title">কম্পিউট মনিটরিং টুল</h1>
+                <!-- <p class="subtitle">Simple, efficient system monitoring</p> -->
+            </div>
+            <div class="controls">
+                <label for="autoRefreshToggle">
+                    <input type="checkbox" id="autoRefreshToggle" checked> Auto-refresh
+                </label>
+                <select id="refreshInterval">
+                    <option value="5">Every 5 seconds</option>
+                    <option value="10" selected>Every 10 seconds</option>
+                    <option value="30">Every 30 seconds</option>
+                    <option value="60">Every minute</option>
+                </select>
+                <button id="collectButton" class="btn">Collect Now</button>
+            </div>
+        </div>
+        
+        <div class="status">
+            <div id="statusMessage">Loading metrics...</div>
+            <div id="lastUpdated"></div>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="card">
+                <h2>CPU Usage</h2>
+                <div id="cpuMetrics">
+                    <div class="loading">Loading CPU metrics...</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Memory Usage</h2>
+                <div id="memoryMetrics">
+                    <div class="loading">Loading memory metrics...</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Disk Usage</h2>
+                <div id="diskMetrics">
+                    <div class="loading">Loading disk metrics...</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>System Load</h2>
+                <div id="loadMetrics">
+                    <div class="loading">Loading system load metrics...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Top Processes</h2>
+            <div id="processMetrics">
+                <div class="loading">Loading process metrics...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration
+        const API_URL = '/tools/api.php'; // Change this to your API endpoint
+        let autoRefresh = true;
+        let refreshInterval = 10; // seconds
+        let refreshTimer = null;
+        let lastMetrics = null;
+        
+        // DOM Elements
+        const collectButton = document.getElementById('collectButton');
+        const autoRefreshToggle = document.getElementById('autoRefreshToggle');
+        const refreshIntervalSelect = document.getElementById('refreshInterval');
+        const statusMessage = document.getElementById('statusMessage');
+        const lastUpdated = document.getElementById('lastUpdated');
+        const cpuMetricsContainer = document.getElementById('cpuMetrics');
+        const memoryMetricsContainer = document.getElementById('memoryMetrics');
+        const diskMetricsContainer = document.getElementById('diskMetrics');
+        const loadMetricsContainer = document.getElementById('loadMetrics');
+        const processMetricsContainer = document.getElementById('processMetrics');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up event listeners
+            collectButton.addEventListener('click', collectMetrics);
+            autoRefreshToggle.addEventListener('change', toggleAutoRefresh);
+            refreshIntervalSelect.addEventListener('change', changeRefreshInterval);
+            
+            // Initial load
+            loadLatestMetrics();
+            
+            // Start auto-refresh if enabled
+            if (autoRefresh) {
+                startAutoRefresh();
+            }
+        });
+        
+        // Toggle auto-refresh
+        function toggleAutoRefresh() {
+            autoRefresh = autoRefreshToggle.checked;
+            
+            if (autoRefresh) {
+                startAutoRefresh();
+            } else {
+                stopAutoRefresh();
+            }
+        }
+        
+        // Change refresh interval
+        function changeRefreshInterval() {
+            refreshInterval = parseInt(refreshIntervalSelect.value);
+            
+            if (autoRefresh) {
+                stopAutoRefresh();
+                startAutoRefresh();
+            }
+        }
+        
+        // Start auto-refresh timer
+        function startAutoRefresh() {
+            stopAutoRefresh(); // Clear any existing timer
+            
+            refreshTimer = setInterval(function() {
+                loadLatestMetrics();
+            }, refreshInterval * 1000);
+        }
+        
+        // Stop auto-refresh timer
+        function stopAutoRefresh() {
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+                refreshTimer = null;
+            }
+        }
+        
+        // Collect metrics manually
+        function collectMetrics() {
+            statusMessage.textContent = 'Collecting new metrics...';
+            collectButton.disabled = true;
+            
+            fetch(`${API_URL}?action=collect`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        statusMessage.textContent = 'Metrics collected successfully!';
+                        renderMetrics(data.metrics);
+                        lastMetrics = data.metrics;
+                    } else {
+                        statusMessage.textContent = 'Error: ' + data.message;
+                    }
+                })
+                .catch(error => {
+                    statusMessage.textContent = 'Error communicating with server: ' + error.message;
+                })
+                .finally(() => {
+                    collectButton.disabled = false;
+                });
+        }
+        
+        // Load latest metrics
+        function loadLatestMetrics() {
+            fetch(`${API_URL}?action=latest`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        statusMessage.textContent = 'Metrics loaded successfully';
+                        renderMetrics(data.metrics);
+                        lastMetrics = data.metrics;
+                    } else {
+                        statusMessage.textContent = data.message || 'Failed to load metrics';
+                    }
+                })
+                .catch(error => {
+                    statusMessage.textContent = 'Error loading metrics: ' + error.message;
+                });
+        }
+        
+        // Render metrics on page
+        function renderMetrics(metrics) {
+            if (!metrics) return;
+            
+            // Update timestamp
+            lastUpdated.textContent = `Last updated: ${metrics.timestamp}`;
+            
+            // Render CPU metrics
+            renderCpuMetrics(metrics.cpu);
+            
+            // Render memory metrics
+            renderMemoryMetrics(metrics.memory);
+            
+            // Render disk metrics
+            renderDiskMetrics(metrics.disk);
+            
+            // Render load metrics
+            renderLoadMetrics(metrics.cpu.load_average);
+            
+            // Render process metrics
+            renderProcessMetrics(metrics.processes);
+        }
+        
+        // Render CPU metrics
+        function renderCpuMetrics(cpu) {
+            if (!cpu) return;
+            
+            // Calculate CPU usage from detailed stats if available
+            let cpuUsage = 'N/A';
+            if (cpu.detailed && cpu.detailed.cpu) {
+                const cpuData = cpu.detailed.cpu;
+                const total = parseInt(cpuData.user) + parseInt(cpuData.nice) + 
+                             parseInt(cpuData.system) + parseInt(cpuData.idle);
+                const used = total - parseInt(cpuData.idle);
+                cpuUsage = Math.round((used / total) * 100);
+            }
+            
+            let html = `
+                <div class="metric-item">
+                    <h3>CPU Usage</h3>
+                    <div class="metric-value">${cpuUsage}%</div>
+                    <div class="progress-bar">
+                        <div class="fill ${cpuUsage > 90 ? 'danger' : cpuUsage > 70 ? 'warning' : ''}" 
+                             style="width: ${cpuUsage}%"></div>
+                    </div>
+                </div>
+            `;
+            
+            cpuMetricsContainer.innerHTML = html;
+        }
+        
+        // Render memory metrics
+        function renderMemoryMetrics(memory) {
+            if (!memory) return;
+            
+            const totalMB = Math.round(memory.total / 1024);
+            const freeMB = Math.round(memory.free / 1024);
+            const usedMB = totalMB - freeMB;
+            const usedPercent = Math.round((usedMB / totalMB) * 100);
+            
+            let html = `
+                <div class="metric-item">
+                    <h3>Memory Usage</h3>
+                    <div class="metric-value">${usedMB} MB / ${totalMB} MB (${usedPercent}%)</div>
+                    <div class="progress-bar">
+                        <div class="fill ${usedPercent > 90 ? 'danger' : usedPercent > 70 ? 'warning' : ''}" 
+                             style="width: ${usedPercent}%"></div>
+                    </div>
+                </div>
+            `;
+            
+            if (memory.swap_total > 0) {
+                const swapTotalMB = Math.round(memory.swap_total / 1024);
+                const swapFreeMB = Math.round(memory.swap_free / 1024);
+                const swapUsedMB = swapTotalMB - swapFreeMB;
+                const swapUsedPercent = Math.round((swapUsedMB / swapTotalMB) * 100);
+                
+                html += `
+                    <div class="metric-item">
+                        <h3>Swap Usage</h3>
+                        <div class="metric-value">${swapUsedMB} MB / ${swapTotalMB} MB (${swapUsedPercent}%)</div>
+                        <div class="progress-bar">
+                            <div class="fill ${swapUsedPercent > 50 ? 'danger' : swapUsedPercent > 30 ? 'warning' : ''}" 
+                                 style="width: ${swapUsedPercent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            memoryMetricsContainer.innerHTML = html;
+        }
+        
+        // Render disk metrics
+        function renderDiskMetrics(disks) {
+            if (!disks || !disks.length) {
+                diskMetricsContainer.innerHTML = '<div class="loading">No disk data available</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            disks.forEach(disk => {
+                // Skip pseudo filesystems
+                if (disk.filesystem.startsWith('/dev') || disk.filesystem === 'none') {
+                    const percentUsed = parseInt(disk.percent_used.replace('%', ''));
+                    
+                    html += `
+                        <div class="disk-item">
+                            <div class="disk-header">
+                                <strong>${disk.mounted_on}</strong>
+                                <span>${disk.used} / ${disk.size} (${disk.percent_used})</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="fill ${percentUsed > 90 ? 'danger' : percentUsed > 70 ? 'warning' : ''}" 
+                                     style="width: ${percentUsed}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            diskMetricsContainer.innerHTML = html || '<div class="loading">No disk data available</div>';
+        }
+        
+        // Render load metrics
+        function renderLoadMetrics(load) {
+            if (!load) return;
+            
+            let html = `
+                <div class="metric-item">
+                    <h3>Load Average (1 min)</h3>
+                    <div class="metric-value">${load['1min'].toFixed(2)}</div>
+                </div>
+                <div class="metric-item">
+                    <h3>Load Average (5 min)</h3>
+                    <div class="metric-value">${load['5min'].toFixed(2)}</div>
+                </div>
+                <div class="metric-item">
+                    <h3>Load Average (15 min)</h3>
+                    <div class="metric-value">${load['15min'].toFixed(2)}</div>
+                </div>
+            `;
+            
+            loadMetricsContainer.innerHTML = html;
+        }
+        
+        // Render process metrics
+        function renderProcessMetrics(processes) {
+            if (!processes || !processes.length) {
+                processMetricsContainer.innerHTML = '<div class="loading">No process data available</div>';
+                return;
+            }
+            
+            let html = `
+                <table class="process-table">
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>User</th>
+                            <th>CPU %</th>
+                            <th>Memory %</th>
+                            <th>Command</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            processes.forEach(process => {
+                html += `
+                    <tr>
+                        <td>${process.pid}</td>
+                        <td>${process.user}</td>
+                        <td>${process.cpu_percent}</td>
+                        <td>${process.mem_percent}</td>
+                        <td>${process.command}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            processMetricsContainer.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
